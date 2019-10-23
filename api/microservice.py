@@ -10,17 +10,21 @@ def saveRoute_handler():
     # Query string as /saveRoute?route=<xml object>
     # parsing the xml object
     tree = ET.parse(request.body)
-    print(tree)
+    # print(tree)
     root = tree.getroot()
     # Get the Route name
-    routeName = root.get("route name")
+    route = root.find("route")
+    routeName = route.get("name")
     print("Route name:", routeName)
     # Extract the latitude and longitude coordinates
-    for routeleg in root.findall("routeleg"):
-        lat, long = routeleg.findall("lnglat").attrib
+    for routeleg in route.findall("routeleg"):
+        print("in loop")
+        latlong = routeleg.find("lnglat").text
+        print(latlong)
         # Adding new elements to xml object
-        root.append("<lat>",lat,"</lat>")
-        root.append("/lng>",long,"</lng>")
+        #print("lat: ", lat, ", long: ", long)
+        #root.append("<lat>",lat,"</lat>")
+        #rroot.append("/lng>",long,"</lng>")
 
     # Store .xml file
     tree.write(routeName+".xml")
