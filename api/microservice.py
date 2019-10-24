@@ -1,5 +1,6 @@
 from bottle import request, response
 from bottle import post, get, put, delete
+from bottle import static_file
 import xml.etree.ElementTree as ET
 
 _names = set()  # the set of names
@@ -35,21 +36,19 @@ def saveRoute_handler():
 
     # Store .xml file
     tree.write(routeName+".xml")
-    pass
+    response.status = 200
+    return
 
 
 @get('/getRoute')
 def getRoute_handler():
     '''Handles for getRoute query'''
     # Query string as /getRoute?route=<xml object>
-    routeName = request.query.route
-    #print(routeName)
-    # Open the file in server
-    with open(routName+".xml", 'r') as fileHandler:
-        xml = fileHandler.readlines()
-
+    routeName = request.query.route+".xml"
+    print(routeName)
     response.status = 200 # Success
-    pass
+    response.headers['Content-Type'] = 'xml/application'
+    return static_file(routeName, root='./')
 
 # Not use in this exe, just for future reference
 
