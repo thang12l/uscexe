@@ -13,7 +13,7 @@ Cache-Control: no-cache
 
 <?xml version="1.0"?>
 <routes>
-    <route name="Route 1">
+    <route name="Route 2">
         <routeleg>
             <pos>1</pos>
             <lnglat>(-26.577, 152.911)</lnglat>         <

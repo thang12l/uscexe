@@ -15,16 +15,23 @@ def saveRoute_handler():
     # Get the Route name
     route = root.find("route")
     routeName = route.get("name")
-    print("Route name:", routeName)
+    #print("Route name:", routeName)
     # Extract the latitude and longitude coordinates
     for routeleg in route.findall("routeleg"):
-        print("in loop")
+        #print("in loop")
         latlong = routeleg.find("lnglat").text
-        print(latlong)
+        #print(latlong)
+        temp1 = latlong.replace("(","")
+        temp2 = temp1.replace(")","")
+        lat, long = temp2.rsplit(", ")
         # Adding new elements to xml object
         #print("lat: ", lat, ", long: ", long)
-        #root.append("<lat>",lat,"</lat>")
-        #rroot.append("/lng>",long,"</lng>")
+        newlat = ET.SubElement(routeleg,"lat")
+        newlat.text = lat
+        newlong = ET.SubElement(routeleg,"lng")
+        newlong.text = long
+        routeleg.append(newlat)
+        routeleg.append(newlong)
 
     # Store .xml file
     tree.write(routeName+".xml")
@@ -35,7 +42,13 @@ def saveRoute_handler():
 def getRoute_handler():
     '''Handles for getRoute query'''
     # Query string as /getRoute?route=<xml object>
-    xmlobj = request.query.route
+    routeName = request.query.route
+    #print(routeName)
+    # Open the file in server
+    with open(routName+".xml", 'r') as fileHandler:
+        xml = fileHandler.readlines()
+
+    response.status = 200 # Success
     pass
 
 # Not use in this exe, just for future reference
